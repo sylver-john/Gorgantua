@@ -1,0 +1,15 @@
+{
+	"host": "123.1",
+	"user": "root",
+	"password": "",
+	"request": {
+		"base": "base_test",
+		"table": "table_test",
+		"action": "",
+		"howMany": 1,
+		"params": [{
+			"name": "",
+			"type": ""
+		}]
+	}
+}
