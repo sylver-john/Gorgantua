@@ -1,11 +1,11 @@
 {
-	"host": "",
-	"user": "",
+	"host": "127.0.0.1:3306",
+	"user": "root",
 	"password": "",
 	"request": {
-		"base": "",
-		"table": "",
-		"action": "",
-		"howMany": 0
+		"base": "base_test",
+		"table": "table_test",
+		"action": "INSERT",
+		"howMany": 50
 	}
 }
