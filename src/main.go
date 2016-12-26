@@ -6,24 +6,12 @@ import(
 	"encoding/json"
 	"errors"
 	"io/ioutil"
+	"./mysql"
+	"./entity"
 )
 
-type Config struct {
-	Host string `json:"host"`
-	User string `json:"user"`
-	Password string `json:"password"`
-	Request	Request `json:"request"`
-}
-
-type Request struct {
-	Base string `json:"base"`
-	Table string `json:"table"`
-	Action string `json:"action"`
-	HowMany float64 `json:"howMany"` 
-}
-
-func GetConfig(configPath string) (Config, error) {
-	var config Config
+func GetConfig(configPath string) (entity.Config, error) {
+	var config entity.Config
 	log.Print(config.Request.Base)
 	rawConfig, err := ioutil.ReadFile(configPath)
 	if err != nil {
@@ -49,9 +37,9 @@ func main() {
 	} else {
 		switch os.Args[1] {
 		case "mysql":
-			db := GetMysqlConnexion(config)
-			params := GetMysqlColumns(db)
-			ExecuteAction(config.Request, params, db)
+			db := mysql.GetMysqlConnexion(config)
+			params := mysql.GetMysqlColumns(db)
+			mysql.ExecuteAction(config.Request, params, db)
 		}
 	}
 }

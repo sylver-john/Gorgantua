@@ -1,0 +1,11 @@
+{
+	"host": "myhost",
+	"user": "myuser",
+	"password": "mypassword",
+	"request": {
+		"base": "mybase",
+		"table": "mytable",
+		"action": "myaction",
+		"howMany": 0
+	}
+}
