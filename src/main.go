@@ -18,14 +18,8 @@ type Config struct {
 type Request struct {
 	Base string `json:"base"`
 	Table string `json:"table"`
-	Action string `json:"ation"`
-	Params []Param `json:"params"`
+	Action string `json:"action"`
 	HowMany float64 `json:"howMany"` 
-}
-
-type Param struct {
-	Name string `json:"name"`
-	Type string `json:type`
 }
 
 func GetConfig(configPath string) (Config, error) {
@@ -44,6 +38,7 @@ func GetConfig(configPath string) (Config, error) {
 	return config, nil
 }
 
+
 func main() {
 	config, configErr := GetConfig("config.json")
 	if configErr != nil {
@@ -54,7 +49,9 @@ func main() {
 	} else {
 		switch os.Args[1] {
 		case "mysql":
-			GetMysqlConnexion(config)
+			db := GetMysqlConnexion(config)
+			params := GetMysqlColumns(db)
+			ExecuteAction(config.Request, params, db)
 		}
 	}
 }
