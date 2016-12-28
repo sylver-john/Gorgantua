@@ -9,10 +9,14 @@ import(
 	"regexp"
 	"../entity"
 	"../utils"
+	"strings"
+	"time"
 )
 
 var intValue = regexp.MustCompile(`int.*`)
-var stringValue = regexp.MustCompile(`text|varchar`)
+var stringValue = regexp.MustCompile(`text`)
+var varcharValue = regexp.MustCompile(`varchar`)
+var dateValue = regexp.MustCompile(`date`)
 
 func GetMysqlConnexion(config entity.Config) *sql.DB {
 	db, err := sql.Open("mysql", config.User + ":" + config.Password + "@tcp(" + config.Host + ")/" + config.Request.Base)
@@ -48,13 +52,18 @@ func GenerateRow(params []entity.MysqlParam) map[string]entity.MysqlGeneratedDat
 	mysqlGeneratedRowData := make(map[string]entity.MysqlGeneratedData, 0)
 	var mysqlGeneratedData entity.MysqlGeneratedData
 	for _, param := range params {
-		switch{
+		switch {
 		case stringValue.MatchString(param.Coltype):
-			// generate random string
 			mysqlGeneratedData.Value = utils.RandSeq(10)
+		case varcharValue.MatchString(param.Coltype):
+			tmpArray := strings.Split(param.Coltype, "(")
+			tmpString := strings.Replace(tmpArray[1], ")", "", -1)
+			tmpInt, _:= strconv.Atoi(tmpString)
+			mysqlGeneratedData.Value = utils.RandSeq(tmpInt)
 		case intValue.MatchString(param.Coltype):
-			// generate random int
 			mysqlGeneratedData.Value = rand.Intn(11)
+		case dateValue.MatchString(param.Coltype):
+			mysqlGeneratedData.Value = time.Now()
 		}
 		mysqlGeneratedRowData[param.Field] = mysqlGeneratedData
 	}
@@ -79,12 +88,19 @@ func GenerateQuery(request entity.Request, params []entity.MysqlParam, mysqlGene
 			} else {
 				query += param.Field + "=" + strconv.Itoa(mysqlGeneratedData[param.Field].Value.(int))			
 			}
+		case time.Time:
+			if !isLastElement {
+				query += param.Field + "=" + mysqlGeneratedData[param.Field].Value.(time.Time).String() +","
+			} else {
+				query += param.Field + "=" + mysqlGeneratedData[param.Field].Value.(time.Time).String()
+			}
 		}
 	}
 	return query
 }
 func InsertMysql(request entity.Request, params []entity.MysqlParam, mysqlGeneratedData map[string]entity.MysqlGeneratedData, db *sql.DB) {
 	query := GenerateQuery(request, params, mysqlGeneratedData)
+	log.Print(query)
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)	
@@ -100,7 +116,6 @@ func ExecuteAction(request entity.Request, params []entity.MysqlParam, db *sql.D
 	case "INSERT":
 		for i := 0; i < int(request.HowMany); i++ {
 			mysqlGeneratedData := GenerateRow(params)
-			log.Print(mysqlGeneratedData)
 			InsertMysql(request, params, mysqlGeneratedData, db)
 		}
 	}
