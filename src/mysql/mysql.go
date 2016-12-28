@@ -8,6 +8,7 @@ import(
 	"math/rand"
 	"regexp"
 	"../entity"
+	"../utils"
 )
 
 var intValue = regexp.MustCompile(`int.*`)
@@ -50,7 +51,7 @@ func GenerateRow(params []entity.MysqlParam) map[string]entity.MysqlGeneratedDat
 		switch{
 		case stringValue.MatchString(param.Coltype):
 			// generate random string
-			mysqlGeneratedData.Value = "test"
+			mysqlGeneratedData.Value = utils.RandSeq(10)
 		case intValue.MatchString(param.Coltype):
 			// generate random int
 			mysqlGeneratedData.Value = rand.Intn(11)
