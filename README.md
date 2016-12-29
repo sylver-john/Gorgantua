@@ -3,7 +3,7 @@ Fill a database with some random insert writing in Go
 
 ## Setup
 1. Install Go: obviously you should install Go if you want to run the script
-2. Fill src/config.dist/json with our parameters like :
+2. Fill src/config.dist/json with your parameters like :
 `
 {
 	"database": "mysql",
