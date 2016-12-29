@@ -4,6 +4,7 @@ import(
 	"database/sql"
 )
 type Config struct {
+	Database string `json:"database"`
 	Host string `json:"host"`
 	User string `json:"user"`
 	Password string `json:"password"`

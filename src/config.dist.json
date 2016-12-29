@@ -1,4 +1,5 @@
 {
+	"database": "mydatabase",
 	"host": "myhost",
 	"user": "myuser",
 	"password": "mypassword",

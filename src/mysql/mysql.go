@@ -15,7 +15,7 @@ import(
 
 var intValue = regexp.MustCompile(`int.*`)
 var stringValue = regexp.MustCompile(`text`)
-var varcharValue = regexp.MustCompile(`varchar`)
+var varcharValue = regexp.MustCompile(`varchar.*`)
 var dateValue = regexp.MustCompile(`date`)
 
 func GetMysqlConnexion(config entity.Config) *sql.DB {
@@ -90,9 +90,9 @@ func GenerateQuery(request entity.Request, params []entity.MysqlParam, mysqlGene
 			}
 		case time.Time:
 			if !isLastElement {
-				query += param.Field + "=" + mysqlGeneratedData[param.Field].Value.(time.Time).String() +","
+				query += param.Field + "=" + mysqlGeneratedData[param.Field].Value.(time.Time).Format("20060102150405") +","
 			} else {
-				query += param.Field + "=" + mysqlGeneratedData[param.Field].Value.(time.Time).String()
+				query += param.Field + "=" + mysqlGeneratedData[param.Field].Value.(time.Time).Format("20060102150405")
 			}
 		}
 	}
