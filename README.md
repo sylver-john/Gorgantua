@@ -4,7 +4,7 @@ Fill a database with some random insert writing in Go
 ## Setup
 1. Install Go: obviously you should install Go if you want to run the script
 2. Fill src/config.dist/json with your parameters like :
-`
+```json
 {
 	"database": "mysql",
 	"host": "127.0.0.1:3306",
@@ -17,8 +17,8 @@ Fill a database with some random insert writing in Go
 		"howMany": 50
 	}
 }
-` 
-3. If having make you can  use `make setup and then make run`, if not you have to install a package first with `get github.com/go-sql-driver/mysql`, fill src/config.json instead of src/config.dist.json and finally run `go run src/main.go`
+```
+3. If you have make you can  use `make setup and then make run`, if not you have to install a package first with `get github.com/go-sql-driver/mysql`, fill src/config.json instead of src/config.dist.json and finally run `go run src/main.go`
 
 ## Configuration
 
